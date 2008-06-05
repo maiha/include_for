@@ -100,7 +100,7 @@ Of course, you can modify the grouping name in +to+ option. (default :header)
 Install
 =======
 
-http://wota.jp/svn/rails/plugins/branches/stable/include_for
+git://github.com/maiha/include_for.git
 
 
 Author
