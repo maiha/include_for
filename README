@@ -1,0 +1,108 @@
+IncludeFor
+==========
+
+create include or link tags automatically according to the given file names
+
+
+Usage
+=====
+
+  include_for "prototype.js"
+  # => '<script type="text/javascript" src="/javascripts/prototype.js"></script>'
+
+  include_for "application.css"
+  # => '<link type="text/css" rel="Stylesheet" media="screen" href="/stylesheets/application.css"/>'
+
+
+Example
+=======
+
+We can simpliy use the replacement of existing methods.
+
+  1. includes one file
+
+    <%= include_for "prototype.js" %>
+    # generates
+    <script type="text/javascript" src="/javascripts/prototype.js"></script>
+
+  2. plural files
+
+    <%= include_for "prototype.js", "controls.js" %>
+    # generates
+    <script type="text/javascript" src="/javascripts/prototype.js"></script>
+    <script type="text/javascript" src="/javascripts/controls.js"></script>
+
+  3. and css files
+
+    <%= include_for "prototype.js", "controls.js", "application.css" %>
+    # generates
+    <script type="text/javascript" src="/javascripts/prototype.js"></script>
+    <script type="text/javascript" src="/javascripts/controls.js"></script>
+    <link type="text/css" rel="Stylesheet" media="screen" href="/stylesheets/application.css"/>
+
+  4. avoid from including same file twice
+
+    <%= include_for "prototype.js", "prototype.js", "prototype.js"  %>
+    # generates
+    <script type="text/javascript" src="/javascripts/prototype.js"></script>
+
+  5. pass an option to the functions (:to is reserved key)
+
+    <%= include_for "application.js", :charset=>"UTF-8" %>
+    # generates
+    <script charset="UTF-8" type="text/javascript" src="/javascripts/application.js"></script>
+
+Advanced Usage
+==============
+
+And this plugin can also separate declaration and inclusion
+by using '<%' rather than '<%=' for declaration purpose.
+
+  * declaration for using some scripts
+    <% include_for "prototype.js" %>
+    # or in some your helpers
+    def auto_complete_zipcode(record, ...)
+      include_for "prototype.js"
+
+  * inclusion by using content_for mechanism
+
+    # in your layout file
+    <head>
+      <%= yield :header %>
+    </head>
+
+We'll get following code only in the case that we use "auto_complete_zipcode" method.
+
+    <head>
+      <script type="text/javascript" src="/javascripts/prototype.js"></script>
+    </head>
+
+And, We can avoid to force wasted javascripts when that method is not used.
+
+    <head>
+    </head>
+
+Of course, you can modify the grouping name in +to+ option. (default :header)
+
+    include_for "prototype.js"                  # stored to @content_for_header
+    include_for "powered-by.js", :to=>:footer   # stored to @content_for_footer
+
+    # in your layout file
+    <head>
+      <%= yield :header %>
+    </head>
+    <body>
+      <%= yield %>
+      <%= yield :footer %>
+    </body>
+
+
+Install
+=======
+
+http://wota.jp/svn/rails/plugins/branches/stable/include_for
+
+
+Author
+======
+Maiha <maiha@wota.jp>
